@@ -77,7 +77,7 @@ app.get('/', (req, res) => {
         ${comment}window.location.href = "${urlParam}";
       }, 2000);
       setTimeout(function() {
-          window.location.href = "x-safari-${urlParam}";
+          ${comment}window.location.href = "x-safari-${urlParam}";
         }, 1000);
       ${comment}window.location.href = "${redirectUrl}";
     </script>
