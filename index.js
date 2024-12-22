@@ -28,19 +28,17 @@ const isValidUrl = (url) => {
 };
 
 // Function to determine the appropriate native protocol
-const getNativeProtocol = (url, browser) => {
+const getNativeProtocol = (url, os) => {
   const domain = new URL(url).hostname;
   if (domain.endsWith('youtube.com')) return 'vnd.youtube';
   if (domain.endsWith('linkedin.com')) return 'linkedin';
   if (domain.endsWith('spotify.com')) return 'spotify';
   if (domain.endsWith('leclercdrive.fr')) return 'leclercdrive';
   if (domain.endsWith('e.leclerc')) return 'leclerc';
-  
-  // Use specific protocols for Safari and Chrome
-  if (browser === 'Safari') return 'safari';
-  if (browser === 'Mobile Safari') return 'safari';
-  if (browser === 'Chrome') return 'googlechrome';
-  if (browser === 'Mobile Chrome') return 'googlechrome';
+
+  // Use specific protocols for Safari (iOS/macOS) and Chrome (Android)
+  if (os === 'iOS' || os === 'Mac OS') return 'safari';
+  if (os === 'Android') return 'googlechrome';
 
   return 'https'; // Default to HTTPS for unsupported domains
 };
@@ -59,8 +57,8 @@ app.get('/', (req, res) => {
     return res.status(400).send('Invalid "url" parameter. Please provide a valid URL.');
   }
 
-  const { isDesktop, browser } = req.userAgentInfo;
-  const nativeProtocol = getNativeProtocol(urlParam, browser);
+  const { isDesktop, os } = req.userAgentInfo;
+  const nativeProtocol = getNativeProtocol(urlParam, os);
   const protocol = isDesktop ? 'https' : nativeProtocol;
   const redirectUrl = `${protocol}://${urlParam.replace('https://', '').replace('http://', '')}`;
 
@@ -75,7 +73,7 @@ app.get('/', (req, res) => {
       ${comment}window.location.href = "${redirectUrl}";
     </script>
   </head>
-  <body>${redirectUrl} - ${browser}</body>
+  <body>${redirectUrl} - ${os}</body>
 </html>`);
 });
 
