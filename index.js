@@ -38,7 +38,9 @@ const getNativeProtocol = (url, browser) => {
   
   // Use specific protocols for Safari and Chrome
   if (browser === 'Safari') return 'safari';
+  if (browser === 'Mobile Safari') return 'safari';
   if (browser === 'Chrome') return 'googlechrome';
+  if (browser === 'Mobile Chrome') return 'googlechrome';
 
   return 'https'; // Default to HTTPS for unsupported domains
 };
