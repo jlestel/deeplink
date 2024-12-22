@@ -37,7 +37,7 @@ const getNativeProtocol = (url, os) => {
   if (domain.endsWith('e.leclerc')) return 'leclerc';
 
   // Use specific protocols for Safari (iOS/macOS) and Chrome (Android)
-  if (os === 'iOS' || os === 'Mac OS') return 'safari-https';
+  if (os === 'iOS' || os === 'Mac OS') return 'googlechrome';
   if (os === 'Android') return 'googlechrome';
 
   return 'https'; // Default to HTTPS for unsupported domains
