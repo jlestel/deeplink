@@ -35,10 +35,13 @@ const getNativeProtocol = (url, os, browser) => {
   if (domain.endsWith('spotify.com')) return 'spotify';
   if (domain.endsWith('tesla.com')) return 'tesla';
   if (domain.endsWith('leclercdrive.fr')) return 'leclercdrive';
+  if (domain.endsWith('pinterest.com')) return 'pinterest';
+  if (domain.endsWith('doctolib.fr')) return 'doctolib';
+  if (domain.endsWith('leboncoin.fr')) return 'leboncoin';
   if (domain.endsWith('e.leclerc')) return 'leclerc';
 
   // Special case for Instagram on iOS
-  if (os === 'iOS' && browser === 'Instagram') return 'googlechrome';
+  if (os === 'iOS') return 'googlechrome';
 
   // Use specific protocols for Safari (iOS/macOS) and Chrome (Android)
   //if (os === 'iOS' || os === 'Mac OS') return 'safari';
