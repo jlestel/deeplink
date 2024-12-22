@@ -33,7 +33,9 @@ const getNativeProtocol = (url, browser) => {
   if (domain.endsWith('youtube.com')) return 'vnd.youtube';
   if (domain.endsWith('linkedin.com')) return 'linkedin';
   if (domain.endsWith('spotify.com')) return 'spotify';
-
+  if (domain.endsWith('leclercdrive.fr')) return 'leclercdrive';
+  if (domain.endsWith('e.leclerc')) return 'leclerc';
+  
   // Use specific protocols for Safari and Chrome
   if (browser === 'Safari') return 'safari';
   if (browser === 'Chrome') return 'googlechrome';
@@ -45,30 +47,30 @@ app.use(userAgentMiddleware);
 
 app.get('/', (req, res) => {
   const urlParam = req.query.url;
+  const debug = req.query.debug;
+  const comment = debug ? '//' : '';
   if (!urlParam) {
-    return res.status(400).send('Missing "url" parameter.');
+    return res.status(200).send('Missing "url" parameter.');
   }
 
-  const decodedUrl = decodeURIComponent(urlParam);
-
-  if (!isValidUrl(decodedUrl)) {
+  if (!isValidUrl(urlParam)) {
     return res.status(400).send('Invalid "url" parameter. Please provide a valid URL.');
   }
 
   const { isDesktop, browser } = req.userAgentInfo;
-  const nativeProtocol = getNativeProtocol(decodedUrl, browser);
+  const nativeProtocol = getNativeProtocol(urlParam, browser);
   const protocol = isDesktop ? 'https' : nativeProtocol;
-  const redirectUrl = `${protocol}://${decodedUrl.replace('https://', '').replace('http://', '')}`;
+  const redirectUrl = `${protocol}://${urlParam.replace('https://', '').replace('http://', '')}`;
 
   res.send(`<!DOCTYPE html>
 <html>
   <head>
     <script>
       setTimeout(function() {
-        window.location.href = "https://${decodedUrl}";
+        ${comment}window.location.href = "https://${urlParam}";
       }, 2000);
 
-      window.location.href = "${redirectUrl}";
+      ${comment}window.location.href = "${redirectUrl}";
     </script>
   </head>
   <body>${redirectUrl}</body>
