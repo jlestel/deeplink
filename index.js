@@ -41,6 +41,8 @@ app.use(userAgentMiddleware);
 
 app.get('/', (req, res) => {
   const urlParam = req.query.url;
+  const debug = req.query.debug;
+  const comment = debug ? '//' : '';
   if (!urlParam) {
     return res.status(200).send('Missing "url" parameter.');
   }
@@ -59,10 +61,10 @@ app.get('/', (req, res) => {
   <head>
     <script>
       setTimeout(function() {
-        //window.location.href = "https://${urlParam}";
+        ${comment}window.location.href = "https://${urlParam}";
       }, 2000);
 
-      //window.location.href = "${redirectUrl}";
+      ${comment}window.location.href = "${redirectUrl}";
     </script>
   </head>
   <body>${redirectUrl}</body>
