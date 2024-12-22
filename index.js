@@ -41,7 +41,7 @@ app.use(userAgentMiddleware);
 app.get('/', (req, res) => {
   const urlParam = req.query.url;
   if (!urlParam) {
-    return res.status(400).send('Missing "url" parameter.');
+    return res.status(200).send('Missing "url" parameter.');
   }
 
   if (!isValidUrl(urlParam)) {
