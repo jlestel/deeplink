@@ -34,6 +34,7 @@ const getNativeProtocol = (url) => {
   if (domain.endsWith('linkedin.com')) return 'linkedin';
   if (domain.endsWith('spotify.com')) return 'spotify';
   if (domain.endsWith('leclercdrive.fr')) return 'leclercdrive';
+  if (domain.endsWith('e.leclerc')) return 'moneleclerc';
   return 'https'; // Default to HTTPS for unsupported domains
 };
 
