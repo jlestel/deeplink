@@ -28,13 +28,16 @@ const isValidUrl = (url) => {
 };
 
 // Function to determine the appropriate native protocol
-const getNativeProtocol = (url) => {
+const getNativeProtocol = (url, browser) => {
   const domain = new URL(url).hostname;
   if (domain.endsWith('youtube.com')) return 'vnd.youtube';
   if (domain.endsWith('linkedin.com')) return 'linkedin';
   if (domain.endsWith('spotify.com')) return 'spotify';
-  if (domain.endsWith('leclercdrive.fr')) return 'leclercdrive';
-  if (domain.endsWith('e.leclerc')) return 'leclerc';
+
+  // Use specific protocols for Safari and Chrome
+  if (browser === 'Safari') return 'safari';
+  if (browser === 'Chrome') return 'googlechrome';
+
   return 'https'; // Default to HTTPS for unsupported domains
 };
 
@@ -42,30 +45,30 @@ app.use(userAgentMiddleware);
 
 app.get('/', (req, res) => {
   const urlParam = req.query.url;
-  const debug = req.query.debug;
-  const comment = debug ? '//' : '';
   if (!urlParam) {
-    return res.status(200).send('Missing "url" parameter.');
+    return res.status(400).send('Missing "url" parameter.');
   }
 
-  if (!isValidUrl(urlParam)) {
+  const decodedUrl = decodeURIComponent(urlParam);
+
+  if (!isValidUrl(decodedUrl)) {
     return res.status(400).send('Invalid "url" parameter. Please provide a valid URL.');
   }
 
-  const { isDesktop } = req.userAgentInfo;
-  const nativeProtocol = getNativeProtocol(urlParam);
+  const { isDesktop, browser } = req.userAgentInfo;
+  const nativeProtocol = getNativeProtocol(decodedUrl, browser);
   const protocol = isDesktop ? 'https' : nativeProtocol;
-  const redirectUrl = `${protocol}://${urlParam.replace('https://', '').replace('http://', '')}`;
+  const redirectUrl = `${protocol}://${decodedUrl.replace('https://', '').replace('http://', '')}`;
 
   res.send(`<!DOCTYPE html>
 <html>
   <head>
     <script>
       setTimeout(function() {
-        ${comment}window.location.href = "https://${urlParam}";
+        window.location.href = "https://${decodedUrl}";
       }, 2000);
 
-      ${comment}window.location.href = "${redirectUrl}";
+      window.location.href = "${redirectUrl}";
     </script>
   </head>
   <body>${redirectUrl}</body>
