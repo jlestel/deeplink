@@ -33,6 +33,7 @@ const getNativeProtocol = (url, os, browser) => {
   if (domain.endsWith('youtube.com')) return 'vnd.youtube';
   if (domain.endsWith('linkedin.com')) return 'linkedin';
   if (domain.endsWith('spotify.com')) return 'spotify';
+  if (domain.endsWith('tesla.com')) return 'tesla';
   if (domain.endsWith('leclercdrive.fr')) return 'leclercdrive';
   if (domain.endsWith('e.leclerc')) return 'leclerc';
 
