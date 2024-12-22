@@ -73,7 +73,7 @@ app.get('/', (req, res) => {
       ${comment}window.location.href = "${redirectUrl}";
     </script>
   </head>
-  <body>${redirectUrl}</body>
+  <body>${redirectUrl} - ${browser}</body>
 </html>`);
 });
 
