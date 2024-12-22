@@ -71,10 +71,10 @@ app.get('/', (req, res) => {
   <head>
     <script>
       setTimeout(function() {
-        ${comment}window.location.href = "https://${urlParam}";
+        ${comment}window.location.href = "${urlParam}";
       }, 2000);
       setTimeout(function() {
-          window.location.href = "x-safari-${redirectUrl}";
+          window.location.href = "x-safari-${urlParam}";
         }, 1000);
       ${comment}window.location.href = "${redirectUrl}";
     </script>
